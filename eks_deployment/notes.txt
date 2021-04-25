@@ -1,0 +1,4 @@
+Requirements:
+- 1 VPC
+- 3 public subnets (in 3 AZ's)
+- 3 private subnets (in same 3 AZ's)
