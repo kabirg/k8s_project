@@ -25,12 +25,13 @@ This demo will deploy a simple VPC, EKS cluster, and then show how to manually (
 
 ## Instructions
 
-***Apply the Terraform Stack***\
+#### Apply the Terraform Stack
 To run terraform stack, set your credentials (either as environment variables or in the AWS credentials file). Then run the following within the 'infrastructure' directory:\
 `terraform init`\
 `terraform apply`
 
-***Configure Kubectl with the Cluster's Access Credentials***:\
+
+#### Configure Kubectl with the Cluster's Access Credentials
 Run the following:\
 `aws eks update-kubeconfig --region us-east-1 --name my_eks_infra`
 
@@ -40,7 +41,8 @@ You should get a response similar to this:\
 You can now run kubectl commands in your cluster:\
 `kubectl config current-context`
 
-***Deploy Metric Server***\
+
+#### Deploy Metric Server
 Metrics Server is an open-source monitoring tool which can retrieve pod-level metrics from the kubelet API (Kubelet contains cAdvisor which exposes these metrics through the API).
 
 Since we kept our Terraform stack light and didn't add a kubernets provider (which would allow us to provision resources WITHIN the cluster with Terraform, not just the cluster itself), we will do this manually with kubectl.
@@ -53,11 +55,13 @@ Since we kept our Terraform stack light and didn't add a kubernets provider (whi
   `kubectl get deployment metrics-server -n kube-system`\
   `kubectl top pod`
 
-***Deploy K8S Dashboard***\
+
+#### Deploy K8S Dashboard
 Run the following:\
 `kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta8/aio/deploy/recommended.yaml`
 
-***Access the Dashboard***\
+
+#### Access the Dashboard
 In order to access API with an HTTP client like a web browser, we can run kubectl in a mode where it acts like a reverse proxy between our local workstation and the API server. Kubectl will take care of location and authenticating to the server.
 - Retrieve the cluster authentication token with this command:\
   `kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep service-controller-token | awk '{print $1}')`
@@ -66,7 +70,8 @@ In order to access API with an HTTP client like a web browser, we can run kubect
 `http://127.0.0.1:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy`
 - Enter the token when prompted. We could also create a separate Service Account and use it's token at this point instead.
 
-***Sources:***
+
+#### Sources
 - https://adrian-philipp.com/notes/use-the-terraform-eks-module-without-kubernetes-access
 - https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/docs/faq.md
 - https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html
