@@ -139,7 +139,9 @@ Access the application in your browser.
 
 #### Tips
 Deleting the cluster:
-`terraform state rm module.my-cluster.kubernetes_config_map.a`
+- `terraform refresh --var-file=development.tfvars`
+- Manually delete the LB.
+- `terraform state rm module.my-cluster.kubernetes_config_map.a`
 
 
 #### Sources

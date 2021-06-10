@@ -1,0 +1,70 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: kag-eksctl-cluster
+  region: us-east-1
+
+nodeGroups:
+  # - name: kag-eksctl-ng-1
+  #   instanceType: t2.small
+  #   desiredCapacity: 3
+  #   ssh:
+  #     publicKeyName: kabirg
+  # - name: kag-eksctl-ng-mixed
+  #   minSize: 3
+  #   maxSize: 5
+  #   instancesDistribution:
+  #     maxPrice: 0.2
+  #     instanceTypes: ["t2.small", "t3.small"]
+  #     onDemandBaseCapacity: 0
+  #     onDemandPercentageAboveBaseCapacity: 50
+  #   ssh:
+  #     publicKeyName: kabirg
+
+  - name: scale-east-1c
+    instanceType: t2.small
+    desiredCapacity: 1
+    maxSize: 10
+    availabilityZones: ["us-east-1c"]
+    iam:
+      withAddonPolicies:
+        autoScaler: true
+    labels:
+      nodegroup-type: stateful-east-1c
+      instance-type: onDemand
+    ssh: # use existing EC2 key
+      publicKeyName: kabirg
+
+  - name: scale-east-1d
+    instanceType: t2.small
+    desiredCapacity: 1
+    maxSize: 10
+    availabilityZones: ["us-east-1d"]
+    iam:
+      withAddonPolicies:
+        autoScaler: true
+    labels:
+      nodegroup-type: stateful-east-1d
+      instance-type: onDemand
+    ssh: # use existing EC2 key
+      publicKeyName: kabirg
+
+  - name: scale-spot
+    desiredCapacity: 1
+    maxSize: 10
+    instancesDistribution:
+      instanceTypes: ["t2.small", "t3.small"]
+      onDemandBaseCapacity: 0
+      onDemandPercentageAboveBaseCapacity: 0
+    availabilityZones: ["us-east-1c", "us-east-1d"]
+    iam:
+      withAddonPolicies:
+        autoScaler: true
+    labels:
+      nodegroup-type: stateless-workload
+      instance-type: spot
+    ssh:
+      publicKeyName: kabirg
+
+availabilityZones: ["us-east-1c", "us-east-1d"]
