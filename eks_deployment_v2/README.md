@@ -1,6 +1,6 @@
 # EKS Implementation Version 2
 
-This demo will deploy a simple VPC, EKS cluster, and then show how to manually (with kubectl) deploy Metric Server (to gather resource utilization metrics of our cluster) and a dashboard so that we can manage the cluster via internet browser.
+A demo which utilizes Terraform Workspaces to deploy an EKS cluster within a multi-account strategy, with the state stored remotely. It will also add an NGINX Ingress (and requite DNS components for SSL-enablement), RBAC resources, and deploy a simple app via the Helm provider.
 
 ## What Gets Deployed
 ***AWS Infrastructrure***
